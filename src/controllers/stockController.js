@@ -8,7 +8,9 @@ const fetchStockPricesFromAPI = async () => {
             params: {
                 // 필요한 요청 파라미터 추가
                 serviceKey: process.env.API_KEY,  // 환경변수에 저장된 API 키 사용
-                // 예: stockId: '005930', date: '20211001'
+                stockId: stdckId,
+                date: date,
+                
             }
         });
 
@@ -47,6 +49,25 @@ const updateStockPrices = async (req, res) => {
     }
 };
 
+// 주식 정보를 반환하는 API 엔드포인트
+const getStockPrices = async (req, res) => {
+    try {
+        const query = 'SELECT * FROM stock_prices ORDER BY updated_at DESC';
+        db.query(query, (err, results) => {
+            if (err) {
+                console.error('DB 조회 오류:', err);
+                return res.status(500).json({ error: '주식 정보 조회 실패' });
+            }
+            return res.json(results);
+        });
+    } catch (error) {
+        console.error('오류:', error);
+        return res.status(500).json({ error: '주식 정보 조회 실패' });
+    }
+};
+
+// 모듈 내보내기
 module.exports = {
-    updateStockPrices
+    updateStockPrices,
+    getStockPrices
 };

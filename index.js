@@ -1,5 +1,6 @@
 require('dotenv').config();  // .env 파일을 로드
-const app = require('./src/app');
+const express = require('express');
+const app = express();
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
